@@ -15,7 +15,7 @@
             <? foreach ($courses as $course): ?>
                 <tr>
                     <td><a href="<?= UrlHelper::getLink('details.php', array('sem_id' => $course->id)) ?>"><?= $course->Veranstaltungsnummer ?></a></td>
-                    <td><a href="<?= UrlHelper::getLink('details.php', array('sem_id' => $course->id)) ?>"><?= $course->getSemType()->offsetGet('name') ?></a></td>
+                    <td><a href="<?= UrlHelper::getLink('details.php', array('sem_id' => $course->id)) ?>"><?= $GLOBALS['SEM_TYPE'][$course->status]['name'] ?></a></td>
                     <td><a href="<?= UrlHelper::getLink('details.php', array('sem_id' => $course->id)) ?>"><?= $course->name ?></a></td>
                     <td>
                         <?= join(', ', array_map('ObjectdisplayHelper::link', $course->members->findBy('status', 'dozent')->pluck('user'))) ?>
