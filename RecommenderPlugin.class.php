@@ -1,4 +1,5 @@
 <?php
+
 require 'bootstrap.php';
 
 /**
@@ -9,30 +10,28 @@ require 'bootstrap.php';
  * @author  Florian Bieringer <florian.bieringer@uni-passau.de>
  * @version 0.1a
  */
-
 class RecommenderPlugin extends StudIPPlugin implements SystemPlugin {
 
     public function __construct() {
         parent::__construct();
-        
-        $navigation = new AutoNavigation(_('Kursvorschläge'));
-        $navigation->setURL(PluginEngine::GetURL($this, array(), 'show'));
-        Navigation::addItem('/start/my_courses/recomenderplugin', $navigation);
+        if (!$GLOBALS['perm']->have_perm('dozent')) {
+            $navigation = new AutoNavigation(_('Kursvorschläge'));
+            $navigation->setURL(PluginEngine::GetURL($this, array(), 'show'));
+            Navigation::addItem('/browse/recomenderplugin', $navigation);
+        }
     }
 
-    public function initialize () {
+    public function initialize() {
 
-    
-        PageLayout::addStylesheet($this->getPluginURL().'/assets/style.css');
-        PageLayout::addScript($this->getPluginURL().'/assets/application.js');
+
+        PageLayout::addStylesheet($this->getPluginURL() . '/assets/style.css');
+        PageLayout::addScript($this->getPluginURL() . '/assets/application.js');
     }
 
     public function perform($unconsumed_path) {
         $this->setupAutoload();
         $dispatcher = new Trails_Dispatcher(
-            $this->getPluginPath(),
-            rtrim(PluginEngine::getLink($this, array(), null), '/'),
-            'show'
+                $this->getPluginPath(), rtrim(PluginEngine::getLink($this, array(), null), '/'), 'show'
         );
         $dispatcher->plugin = $this;
         $dispatcher->dispatch($unconsumed_path);
@@ -47,4 +46,5 @@ class RecommenderPlugin extends StudIPPlugin implements SystemPlugin {
             });
         }
     }
+
 }
