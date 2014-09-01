@@ -17,7 +17,7 @@ class RecommenderPlugin extends StudIPPlugin implements SystemPlugin {
         
         $navigation = new AutoNavigation(_('Kursvorschläge'));
         $navigation->setURL(PluginEngine::GetURL($this, array(), 'show'));
-        Navigation::addItem('/tools/recomenderplugin', $navigation);
+        Navigation::addItem('/start/my_courses/recomenderplugin', $navigation);
     }
 
     public function initialize () {
