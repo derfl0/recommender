@@ -14,7 +14,7 @@ class RecommenderPlugin extends StudIPPlugin implements SystemPlugin {
 
     public function __construct() {
         parent::__construct();
-
+        
         $navigation = new AutoNavigation(_('Recommender'));
         $navigation->setURL(PluginEngine::GetURL($this, array(), 'show'));
         Navigation::addItem('/tools/recomenderplugin', $navigation);

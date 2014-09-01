@@ -32,7 +32,8 @@ class ShowController extends StudipController {
                             LIMIT 30");
         
         // Prepare params
-        $semester = Semester::findCurrent();
+        $semester = current(Semester::findBySQL('vorles_ende > ? ORDER BY beginn', array(time())));
+        $this->semester = $semester;
         $recommended->bindParam(':start', $semester->beginn);
         $recommended->bindParam(':userid', $GLOBALS['user']->id);
         

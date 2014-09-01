@@ -1,5 +1,5 @@
 <? if (!$courses): ?>
-    <p><?= _('Leider wurden keine interessanten Kurse gefunden') ?></p>
+<p><?= sprintf(_('Leider wurden keine interessanten Kurse für %s gefunden'), $semester->name) ?></p>
 <? else: ?>
     <table class="default">
         <caption><?= _('Interessante Kurse') ?></caption>
