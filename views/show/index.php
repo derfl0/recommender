@@ -6,14 +6,20 @@
         <thead>
             <tr>
                 <th><?= _('Veranstaltungsnummer') ?></th>
+                <th><?= _('Typ') ?></th>
                 <th><?= _('Name') ?></th>
+                <th><?= _('Dozent') ?></th>
             </tr>
         </thead>
         <tbody>
             <? foreach ($courses as $course): ?>
                 <tr>
                     <td><a href="<?= UrlHelper::getLink('details.php', array('sem_id' => $course->id)) ?>"><?= $course->Veranstaltungsnummer ?></a></td>
+                    <td><a href="<?= UrlHelper::getLink('details.php', array('sem_id' => $course->id)) ?>"><?= $course->getSemType()->offsetGet('name') ?></a></td>
                     <td><a href="<?= UrlHelper::getLink('details.php', array('sem_id' => $course->id)) ?>"><?= $course->name ?></a></td>
+                    <td>
+                        <?= join(', ', array_map('ObjectdisplayHelper::link', $course->members->findBy('status', 'dozent')->pluck('user'))) ?>
+                    </td>
                 </tr>
             <? endforeach; ?>
         </tbody>
