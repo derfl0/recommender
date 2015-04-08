@@ -14,7 +14,7 @@ class RecommenderPlugin extends StudIPPlugin implements SystemPlugin {
 
     public function __construct() {
         parent::__construct();
-        if (!$GLOBALS['perm']->have_perm('dozent')) {
+        if (!$GLOBALS['perm']->have_perm('admin')) {
             $navigation = new AutoNavigation(_('Kursvorschläge'));
             $navigation->setURL(PluginEngine::GetURL($this, array(), 'show'));
             Navigation::addItem('/browse/recomenderplugin', $navigation);
