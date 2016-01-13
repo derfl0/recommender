@@ -2,7 +2,7 @@
 <p><?= sprintf(_('Leider wurden keine interessanten Kurse für %s gefunden'), $semester->name) ?></p>
 <? else: ?>
     <table class="default">
-        <caption><?= _('Interessante Kurse') ?></caption>
+        <caption><?= _('Interessante Kurse') ?> <?= htmlReady($semester->description ? : $semester->name) ?></caption>
         <thead>
             <tr>
                 <th><?= _('Veranstaltungsnummer') ?></th>
