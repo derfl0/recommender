@@ -15,13 +15,32 @@ class ShowController extends StudipController {
 
     public function index_action() {
         $recommended = DBManager::get()->prepare("SELECT seminare.* FROM
-                            (SELECT u2.user_id, COUNT(*) as points
-                            FROM seminar_user u1 
-                            JOIN seminar_user u2 USING (seminar_id) 
-                            WHERE u1.user_id = :userid 
-                            AND u2.user_id != :userid  
-                            GROUP BY u2.user_id 
-                            ORDER BY COUNT(*) DESC)
+                            (SELECT userm.user_id, IFNULL(sempoints, 1) * mult as points FROM
+
+                            /* Select users that had similar courses */
+ 							(SELECT u2.user_id, COUNT(*) as sempoints
+                            FROM seminar_user u1
+                            JOIN seminar_user u2 USING (seminar_id)
+                            WHERE u1.user_id = :userid
+                            AND u2.user_id != :userid
+                            GROUP BY u2.user_id
+                            ORDER BY COUNT(*) DESC) semuser
+
+                            RIGHT JOIN
+
+                            /* Select users, that study the same as me */
+                            (SELECT user_id, SUM(diff) as mult FROM
+                            (SELECT st2.user_id,1 / SQRT(ABS(st1.semester - st2.semester)) as diff FROM user_studiengang st1
+                            JOIN user_studiengang st2 USING (studiengang_id, abschluss_id)
+                            WHERE st1.user_id = :userid
+                            AND st2.user_id != :userid
+                            ORDER BY st2.user_id DESC) as userstg
+                            GROUP BY user_id
+                            HAVING mult IS NOT NULL) userm
+
+                            USING (user_id))
+
+
                             as recommender
                             JOIN seminar_user USING (user_id)
                             JOIN seminare USING (seminar_id)
